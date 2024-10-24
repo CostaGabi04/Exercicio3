@@ -20,27 +20,21 @@ public class ProjetoService {
     private FuncionarioRepository funcionarioRepository;
 
     public Optional<Projeto> buscarProjetoPorId(Integer id) {
-        // Usando a instância do projetoRepository para chamar findById
         return projetoRepository.findById(id);
     }
 
     public void vincularFuncionarioAProjeto(Integer idFuncionario, Integer idProjeto) {
-        // Obtém o funcionário e o projeto através do repositório
         Optional<Funcionario> funcionarioOpt = funcionarioRepository.findById(idFuncionario);
         Optional<Projeto> projetoOpt = projetoRepository.findById(idProjeto);
 
-        // Verifica se ambos estão presentes
         if (funcionarioOpt.isPresent() && projetoOpt.isPresent()) {
             Funcionario funcionario = funcionarioOpt.get();
             Projeto projeto = projetoOpt.get();
 
-            // Vincula o funcionário ao projeto
             projeto.getFuncionarios().add(funcionario);
 
-            // Salva o projeto atualizado no banco de dados
             projetoRepository.save(projeto);
         } else {
-            // Trate a exceção ou faça uma lógica adequada quando os objetos não forem encontrados
             throw new RuntimeException("Funcionário ou Projeto não encontrado");
         }
     }
